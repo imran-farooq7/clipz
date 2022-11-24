@@ -7,6 +7,9 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent {
+  alertMessage = 'Please wait ';
+  showAlert = false;
+  alertColor = '';
   registerForm = new FormGroup({
     name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -30,6 +33,9 @@ export class RegisterComponent {
     ]),
   });
   register = () => {
-    console.log('submiited');
+    // console.log('submiited');
+    this.showAlert = true;
+    this.alertMessage = 'Your account has been successfully registered';
+    this.alertColor = 'green';
   };
 }
