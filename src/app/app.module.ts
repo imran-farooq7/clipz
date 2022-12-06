@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { environment } from 'src/environments/environment';
 import { UserModule } from './user/user.module';
 import { NavbarComponent } from './navbar/navbar.component';
-// import { ChildComponent } from './child/child.component';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 
 @NgModule({
   declarations: [AppComponent, NavbarComponent],
@@ -17,6 +17,7 @@ import { NavbarComponent } from './navbar/navbar.component';
     UserModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
+    AngularFirestoreModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
