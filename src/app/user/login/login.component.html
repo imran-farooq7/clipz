@@ -1,3 +1,4 @@
+<app-alert [color]="alertColor" *ngIf="showAlert"></app-alert>
 <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
   <!-- Email -->
   <div class="mb-3">
@@ -30,6 +31,7 @@
       name="password"
       #password="ngModel"
       required
+      [(ngModel)]="credentials.password"
     />
     <p
       class="text-red-400"

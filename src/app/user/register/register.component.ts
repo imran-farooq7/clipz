@@ -49,7 +49,7 @@ export class RegisterComponent {
         email as string,
         password as string,
         name as string,
-        age as string,
+        Number(age),
         phoneNumber as string
       );
     } catch (error) {

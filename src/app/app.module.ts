@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import { UserModule } from './user/user.module';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AuthService } from './services/auth.service';
 
 @NgModule({
   declarations: [AppComponent, NavbarComponent],
@@ -22,4 +23,6 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private auth: AuthService) {}
+}

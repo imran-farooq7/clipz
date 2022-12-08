@@ -11,13 +11,13 @@
       <!-- Primary Navigation -->
       <ul class="flex flex-row mt-1">
         <!-- Navigation Links -->
-        <li (click)="modal.toggleVisible('auth')">
+        <li *ngIf="!isAuthenticated" (click)="modal.toggleVisible('auth')">
           <a class="px-2" href="#">Login / Register</a>
         </li>
-        <li>
+        <li *ngIf="isAuthenticated">
           <a class="px-2" href="#">Manage</a>
         </li>
-        <li>
+        <li *ngIf="isAuthenticated">
           <a class="px-2" href="#">Upload</a>
         </li>
         <li>
