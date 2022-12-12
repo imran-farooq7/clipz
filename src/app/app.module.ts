@@ -23,6 +23,4 @@ import { AuthService } from './services/auth.service';
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {
-  constructor(private auth: AuthService) {}
-}
+export class AppModule {}

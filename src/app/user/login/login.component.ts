@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
     this.showAlert = true;
 
     try {
-      const isAuth = await this.auth.signInWithEmailAndPassword(
+      const isAuth = this.auth.signInWithEmailAndPassword(
         this.credentials.email,
         this.credentials.password
       );
@@ -30,9 +30,9 @@ export class LoginComponent implements OnInit {
       this.alertMessage = 'An error occurred';
       return;
     }
-    // this.alertColor = 'green';
-    // this.alertMessage = 'Login successfully';
-    // this.showAlert = true;
+    this.alertColor = 'green';
+    this.alertMessage = 'Login successfully';
+    this.showAlert = true;
   };
 
   ngOnInit(): void {}

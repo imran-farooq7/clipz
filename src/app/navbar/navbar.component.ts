@@ -1,3 +1,4 @@
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { ModalService } from '../services/modal.service';
@@ -9,11 +10,20 @@ import { ModalService } from '../services/modal.service';
 })
 export class NavbarComponent implements OnInit {
   isAuthenticated: boolean = false;
-  constructor(public modal: ModalService, public userAuth: AuthService) {
+  constructor(
+    public modal: ModalService,
+    public userAuth: AuthService,
+    private afauth: AngularFireAuth
+  ) {
     userAuth.isAuthenticated$.subscribe((status) => {
       this.isAuthenticated = status;
     });
   }
+
+  onSignout = ($event: Event) => {
+    $event.preventDefault();
+    this.afauth.signOut();
+  };
 
   ngOnInit(): void {}
 }
