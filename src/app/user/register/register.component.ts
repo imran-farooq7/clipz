@@ -1,7 +1,6 @@
+import { RegisterValidator } from './../validator/register-validator';
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -15,28 +14,32 @@ export class RegisterComponent {
   showAlert = false;
   isSubmission = false;
   alertColor = '';
-  registerForm = new FormGroup({
-    name: new FormControl('', [Validators.required, Validators.minLength(3)]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    age: new FormControl('', [Validators.required, Validators.min(18)]),
-    password: new FormControl('', [
-      Validators.pattern(
-        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm
-      ),
-      Validators.required,
-    ]),
-    confirmPassword: new FormControl('', [
-      Validators.pattern(
-        /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm
-      ),
-      Validators.required,
-    ]),
-    phoneNumber: new FormControl('', [
-      Validators.required,
-      Validators.minLength(13),
-      Validators.maxLength(13),
-    ]),
-  });
+  registerForm = new FormGroup(
+    {
+      name: new FormControl('', [Validators.required, Validators.minLength(3)]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      age: new FormControl('', [Validators.required, Validators.min(18)]),
+      password: new FormControl('', [
+        Validators.pattern(
+          /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm
+        ),
+        Validators.required,
+      ]),
+      confirmPassword: new FormControl('', [
+        Validators.pattern(
+          /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm
+        ),
+        Validators.required,
+      ]),
+      phoneNumber: new FormControl('', [
+        Validators.required,
+        Validators.minLength(13),
+        Validators.maxLength(13),
+      ]),
+    },
+    [RegisterValidator.match]
+  );
+
   register = async () => {
     // console.log('submiited');
     this.showAlert = true;
