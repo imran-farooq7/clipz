@@ -2,6 +2,7 @@ import { RegisterValidator } from './../validator/register-validator';
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
+import { EmailTaken } from '../validator/email-taken';
 
 @Component({
   selector: 'app-register',
@@ -9,7 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./register.component.css'],
 })
 export class RegisterComponent {
-  constructor(private auth: AuthService) {}
+  constructor(private auth: AuthService, private emailTaken: EmailTaken) {}
   alertMessage = 'Please wait ';
   showAlert = false;
   isSubmission = false;
@@ -17,7 +18,11 @@ export class RegisterComponent {
   registerForm = new FormGroup(
     {
       name: new FormControl('', [Validators.required, Validators.minLength(3)]),
-      email: new FormControl('', [Validators.required, Validators.email]),
+      email: new FormControl(
+        '',
+        [Validators.required, Validators.email],
+        [this.emailTaken.validate]
+      ),
       age: new FormControl('', [Validators.required, Validators.min(18)]),
       password: new FormControl('', [
         Validators.pattern(
