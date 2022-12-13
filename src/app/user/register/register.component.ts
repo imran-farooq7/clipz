@@ -37,7 +37,7 @@ export class RegisterComponent {
         Validators.maxLength(13),
       ]),
     },
-    [RegisterValidator.match]
+    [RegisterValidator.match('password', 'confirmPassword')]
   );
 
   register = async () => {
