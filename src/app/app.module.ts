@@ -10,9 +10,10 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AuthService } from './services/auth.service';
 import { HomeComponent } from './home/home.component';
+import { AboutComponent } from './about/about.component';
 
 @NgModule({
-  declarations: [AppComponent, NavbarComponent, HomeComponent],
+  declarations: [AppComponent, NavbarComponent, HomeComponent, AboutComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
