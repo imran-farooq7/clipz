@@ -9,9 +9,10 @@ import { UserModule } from './user/user.module';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AuthService } from './services/auth.service';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
-  declarations: [AppComponent, NavbarComponent],
+  declarations: [AppComponent, NavbarComponent, HomeComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
