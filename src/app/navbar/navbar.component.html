@@ -13,7 +13,13 @@
           <a class="px-2" href="#">Login / Register</a>
         </li>
         <li *ngIf="isAuthenticated">
-          <a class="px-2" href="#">Manage</a>
+          <a
+            class="px-2"
+            routerLink="/manage"
+            routerLinkActive="text-indigo-400"
+            [routerLinkActiveOptions]="{ exact: true }"
+            >Manage</a
+          >
         </li>
         <li *ngIf="isAuthenticated">
           <a class="px-2" href="#">Upload</a>
@@ -26,7 +32,7 @@
             routerLinkActive="text-indigo-400"
             [routerLinkActiveOptions]="{ exact: true }"
           >
-            >About</a
+            About</a
           >
         </li>
         <li *ngIf="isAuthenticated" (click)="onSignout($event)">

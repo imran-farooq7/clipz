@@ -8,9 +8,9 @@ import { environment } from 'src/environments/environment';
 import { UserModule } from './user/user.module';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
-import { AuthService } from './services/auth.service';
 import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
+import { VideoModule } from './video/video.module';
 
 @NgModule({
   declarations: [AppComponent, NavbarComponent, HomeComponent, AboutComponent],
@@ -21,6 +21,7 @@ import { AboutComponent } from './about/about.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFirestoreModule,
+    VideoModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
