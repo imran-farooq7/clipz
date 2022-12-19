@@ -22,7 +22,13 @@
           >
         </li>
         <li *ngIf="isAuthenticated">
-          <a class="px-2" href="#">Upload</a>
+          <a
+            class="px-2"
+            routerLink="/upload"
+            routerLinkActive="text-indigo-400"
+            [routerLinkActiveOptions]="{ exact: true }"
+            >Upload</a
+          >
         </li>
 
         <li>
