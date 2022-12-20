@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
     this.showAlert = true;
 
     try {
-      const isAuth = this.auth.signInWithEmailAndPassword(
+      const isAuth = await this.auth.signInWithEmailAndPassword(
         this.credentials.email,
         this.credentials.password
       );
@@ -28,6 +28,7 @@ export class LoginComponent implements OnInit {
       console.log(error);
       this.alertColor = 'red';
       this.alertMessage = 'An error occurred';
+      this.showAlert = true;
       return;
     }
     this.alertColor = 'green';
