@@ -17,10 +17,6 @@ import { last, switchMap } from 'rxjs';
   styleUrls: ['./upload.component.css'],
 })
 export class UploadComponent implements OnDestroy {
-  title = new FormControl('', {
-    validators: [Validators.required, Validators.minLength(3)],
-    nonNullable: true,
-  });
   showAlert = false;
   alertColor = 'blue';
   alertMessage = 'Please wait your clip is uploading';
@@ -28,6 +24,10 @@ export class UploadComponent implements OnDestroy {
   percentage = 0;
   user: firebase.User | null = null;
   task?: AngularFireUploadTask;
+  title = new FormControl('', {
+    validators: [Validators.required, Validators.minLength(3)],
+    nonNullable: true,
+  });
   uploadForm = new FormGroup({
     title: this.title,
   });
