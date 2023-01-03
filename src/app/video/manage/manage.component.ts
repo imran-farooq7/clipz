@@ -36,6 +36,16 @@ export class ManageComponent implements OnInit {
       }
     });
   };
+  deleteClip = ($event: Event, clip: any) => {
+    console.log(clip.docID);
+    $event.preventDefault();
+    this.clipService.deleteClip(clip);
+    this.clips.forEach((element: any, index: number) => {
+      if (element.docID === clip.docID) {
+        this.clips.splice(index, 1);
+      }
+    });
+  };
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       this.videoSort = params.sort;
