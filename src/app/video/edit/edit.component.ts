@@ -1,4 +1,12 @@
-import { Component, OnInit, OnDestroy, Input, OnChanges } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  Input,
+  OnChanges,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ClipService } from 'src/app/services/clip.service';
 import { ModalService } from 'src/app/services/modal.service';
@@ -9,6 +17,7 @@ import { ModalService } from 'src/app/services/modal.service';
   styleUrls: ['./edit.component.css'],
 })
 export class EditComponent implements OnInit, OnDestroy, OnChanges {
+  @Output() update = new EventEmitter();
   showAlert: boolean = false;
   alertColor = 'blue';
   alertMessage = 'Please wait updating the clip';
@@ -41,6 +50,9 @@ export class EditComponent implements OnInit, OnDestroy, OnChanges {
     this.title.setValue(this.activeClip.title);
   }
   submitHandler = async () => {
+    if (!this.activeClip) {
+      return;
+    }
     this.showAlert = true;
     this.alertColor = 'blue';
     this.alertMessage = 'Please wait updating the clip';
@@ -54,7 +66,8 @@ export class EditComponent implements OnInit, OnDestroy, OnChanges {
       console.error(error);
       return;
     }
-
+    this.activeClip.title = this.title.value;
+    this.update.emit(this.activeClip);
     this.alertColor = 'green';
     this.alertMessage = 'Clip successfully updated';
   };

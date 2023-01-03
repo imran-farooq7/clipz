@@ -29,6 +29,13 @@ export class ManageComponent implements OnInit {
     this.modal.toggleVisible('editClip');
     console.log('clicked');
   };
+  update = (event: any) => {
+    this.clips.forEach((element: any, index: number) => {
+      if (element.docID === event.docID) {
+        this.clips[index].title = event.title;
+      }
+    });
+  };
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       this.videoSort = params.sort;
