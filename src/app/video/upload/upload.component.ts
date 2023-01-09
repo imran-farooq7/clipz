@@ -10,6 +10,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, OnDestroy } from '@angular/core';
 import { v4 as uuid } from 'uuid';
 import { last, switchMap } from 'rxjs';
+import { FFMPEGService } from 'src/app/services/ffmpeg.service';
 
 @Component({
   selector: 'app-upload',
@@ -38,17 +39,20 @@ export class UploadComponent implements OnDestroy {
     private storage: AngularFireStorage,
     private auth: AngularFireAuth,
     private clipsService: ClipService,
-    private router: Router
+    private router: Router,
+    public ffmpegService: FFMPEGService
   ) {
     this.auth.user.subscribe((user) => (this.user = user));
+    this.ffmpegService.init();
   }
 
-  storeFile = (event: Event) => {
+  storeFile = async (event: Event) => {
     this.isDragOver = false;
     this.file = (event as DragEvent).dataTransfer?.files.item(0) ?? null;
     if (!this.file || this.file.type !== 'video/mp4') {
       return;
     }
+    await this.ffmpegService.getScreenShots(this.file);
     this.nextStep = true;
     this.title.setValue(this.file.name.replace(/\.[^/.]+$/, ''));
   };
