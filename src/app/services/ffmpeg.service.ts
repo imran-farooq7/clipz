@@ -5,6 +5,7 @@ import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
   providedIn: 'root',
 })
 export class FFMPEGService {
+  isRunning = false;
   isReady = false;
   private ffmpeg;
   constructor() {
@@ -16,40 +17,55 @@ export class FFMPEGService {
     if (this.isReady) {
       return;
     }
-    this.isReady = true;
     await this.ffmpeg.load();
+    this.isReady = true;
   };
   getScreenShots = async (file: File) => {
+    this.isRunning = true;
     const data = await fetchFile(file);
+
     this.ffmpeg.FS('writeFile', file.name, data);
+
     const seconds = [1, 2, 3];
     const commands: string[] = [];
-    seconds.forEach((second) =>
+
+    seconds.forEach((second) => {
       commands.push(
+        // Input
         '-i',
         file.name,
+        // Output Options
         '-ss',
         `00:00:0${second}`,
         '-frames:v',
         '1',
         '-filter:v',
         'scale=510:-1',
-        `output_1${second}.png`
-      )
-    );
-    this.ffmpeg.run(...commands);
-    const screenShots: string[] = [];
+        // Output
+        `output_0${second}.png`
+      );
+    });
+
+    await this.ffmpeg.run(...commands);
+
+    const screenshots: string[] = [];
+
     seconds.forEach((second) => {
       const screenshotFile = this.ffmpeg.FS(
         'readFile',
-        `output_1${second}.png`
+        `output_0${second}.png`
       );
       const screenshotBlob = new Blob([screenshotFile.buffer], {
         type: 'image/png',
       });
+
       const screenshotURL = URL.createObjectURL(screenshotBlob);
-      screenShots.push(screenshotURL);
+
+      screenshots.push(screenshotURL);
     });
-    return screenShots;
+
+    this.isRunning = false;
+
+    return screenshots;
   };
 }

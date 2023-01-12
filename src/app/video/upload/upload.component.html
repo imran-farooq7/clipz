@@ -24,6 +24,11 @@
         }"
       >
         <h5>Drop your file here (mp4 only!)</h5>
+        <span
+          *ngIf="ffmpegService.isRunning"
+          class="material-icons text-center animate-spin p-8 text-6xl"
+          >autorenew</span
+        >
       </div>
 
       <!-- Video Editor -->
@@ -36,14 +41,16 @@
         <!-- Screenshots -->
         <h2 class="mb-4 text-xl">Select a Thumbnail</h2>
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          <div class="border-8 cursor-pointer border-green-400">
-            <img src="assets/img/1.jpg" />
-          </div>
-          <div class="border-8 cursor-pointer border-transparent">
-            <img src="assets/img/2.jpg" />
-          </div>
-          <div class="border-8 cursor-pointer border-transparent">
-            <img src="assets/img/3.jpg" />
+          <div
+            class="border-8 cursor-pointer"
+            [ngClass]="{
+              'border-green-400': screenshot === selectedScreenshot,
+              'border-transparent': screenshot !== selectedScreenshot
+            }"
+            *ngFor="let screenshot of screenshots"
+            (click)="selectedScreenshot = screenshot"
+          >
+            <img [src]="screenshot | safeUrl" />
           </div>
         </div>
 
