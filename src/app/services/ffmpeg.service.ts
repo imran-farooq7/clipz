@@ -20,6 +20,11 @@ export class FFMPEGService {
     await this.ffmpeg.load();
     this.isReady = true;
   };
+  blobURL = async (url: string) => {
+    const response = await fetch(url);
+    const blob = response.blob();
+    return blob;
+  };
   getScreenShots = async (file: File) => {
     this.isRunning = true;
     const data = await fetchFile(file);
