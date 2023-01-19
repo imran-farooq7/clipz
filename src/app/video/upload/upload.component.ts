@@ -9,7 +9,7 @@ import {
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, OnDestroy } from '@angular/core';
 import { v4 as uuid } from 'uuid';
-import { last, switchMap } from 'rxjs';
+import { last, switchMap } from 'rxjs/operators';
 import { FFMPEGService } from 'src/app/services/ffmpeg.service';
 
 @Component({

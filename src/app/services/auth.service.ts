@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable, map, filter, switchMap, of } from 'rxjs';
+import { map, filter, switchMap } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 
 @Injectable({
