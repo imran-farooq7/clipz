@@ -11,6 +11,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { v4 as uuid } from 'uuid';
 import { last, switchMap } from 'rxjs/operators';
 import { FFMPEGService } from 'src/app/services/ffmpeg.service';
+import { combineLatest, forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-upload',
@@ -64,53 +65,83 @@ export class UploadComponent implements OnDestroy {
     this.title.setValue(this.file.name.replace(/\.[^/.]+$/, ''));
   };
 
-  uploadFile = async () => {
+  async uploadFile() {
     this.uploadForm.disable();
+
     this.showAlert = true;
-    this.alertMessage = 'Please wait your file is uploading';
+    this.alertColor = 'blue';
     this.inSubmission = true;
+
     const clipFileName = uuid();
     const clipPath = `clips/${clipFileName}.mp4`;
+
     const screenshotBlob = await this.ffmpegService.blobURL(
       this.selectedScreenshot
     );
-    const screenshotPath = `screenshots/${clipPath}.png`;
+    const screenshotPath = `screenshots/${clipFileName}.png`;
+
     this.task = this.storage.upload(clipPath, this.file);
     const clipRef = this.storage.ref(clipPath);
+
     this.screenshotTask = this.storage.upload(screenshotPath, screenshotBlob);
-    this.task
-      .percentageChanges()
-      .subscribe((progress) => (this.percentage = (progress as number) / 100));
-    this.task
-      .snapshotChanges()
+    const screenshotRef = this.storage.ref(screenshotPath);
+
+    combineLatest([
+      this.task.percentageChanges(),
+      this.screenshotTask.percentageChanges(),
+    ]).subscribe((progress) => {
+      const [clipProgress, screenshotProgress] = progress;
+
+      if (!clipProgress || !screenshotProgress) {
+        return;
+      }
+
+      const total = clipProgress + screenshotProgress;
+
+      this.percentage = (total as number) / 200;
+    });
+
+    forkJoin([
+      this.task.snapshotChanges(),
+      this.screenshotTask.snapshotChanges(),
+    ])
       .pipe(
-        last(),
-        switchMap(() => clipRef.getDownloadURL())
+        switchMap(() =>
+          forkJoin([clipRef.getDownloadURL(), screenshotRef.getDownloadURL()])
+        )
       )
       .subscribe({
-        next: async (url) => {
+        next: async (urls) => {
+          const [clipURL, screenshotURL] = urls;
+
           const clip = {
-            uid: this.user?.uid,
-            displayName: this.user?.displayName,
+            uid: this.user?.uid as string,
+            displayName: this.user?.displayName as string,
             title: this.title.value,
-            clipFileName: `${clipFileName}.mp4`,
-            url,
-            timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
+            fileName: `${clipFileName}.mp4`,
+            url: clipURL,
+            screenshotURL,
+            screenshotFileName: `${clipFileName}.png`,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
           };
-          const docRef = await this.clipsService.createClip(clip);
+
+          const clipDocRef = await this.clipsService.createClip(clip);
+
+          console.log(clip);
+
           this.alertColor = 'green';
-          this.alertMessage = 'Success your clip is ready';
+
           setTimeout(() => {
-            this.router.navigate(['clip', docRef.id]);
+            this.router.navigate(['clip', clipDocRef.id]);
           }, 1000);
         },
-        error: (error) => {
+        error: () => {
           this.uploadForm.enable();
-          this.alertColor = 'red';
-          this.alertMessage = 'Upload failed please try again later';
+
+          console.error();
         },
       });
-  };
+  }
   ngOnDestroy(): void {
     this.task?.cancel();
   }

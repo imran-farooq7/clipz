@@ -5,7 +5,11 @@
     *ngFor="let clip of clipsList.pageClips"
   >
     <!-- Image -->
-    <img class="card-img-top rounded-tl-2xl w-full" [src]="clip.image" />
+    <img
+      class="card-img-top rounded-tl-2xl w-full"
+      [src]="clip.screenshotURL"
+      crossorigin
+    />
 
     <!-- Shape -->
     <div class="relative">
