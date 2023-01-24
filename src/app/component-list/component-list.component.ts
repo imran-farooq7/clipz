@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ClipService } from '../services/clip.service';
 
 @Component({
@@ -7,6 +7,8 @@ import { ClipService } from '../services/clip.service';
   styleUrls: ['./component-list.component.css'],
 })
 export class ComponentListComponent implements OnInit, OnDestroy {
+  @Input()
+  scrollable = true;
   handleScroll = () => {
     const { scrollTop, offsetHeight } = document.documentElement;
     const { innerHeight } = window;
@@ -20,9 +22,14 @@ export class ComponentListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    window.addEventListener('scroll', this.handleScroll);
+    if (this.scrollable) {
+      window.addEventListener('scroll', this.handleScroll);
+    }
   }
   ngOnDestroy(): void {
-    window.removeEventListener('scroll', this.handleScroll);
+    if (this.scrollable) {
+      window.removeEventListener('scroll', this.handleScroll);
+    }
+    this.clipsList.pageClips = [];
   }
 }
