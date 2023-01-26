@@ -17,14 +17,17 @@ import videojs from 'video.js';
 export class ClipComponent implements OnInit {
   @ViewChild('videoPlayer', { static: true }) target?: ElementRef;
   player?: videojs.Player;
-  id = '';
-  constructor(public route: ActivatedRoute) {
-    this.route.params.subscribe((params: Params) => {
-      this.id = params.id;
-    });
-  }
+  clip?: any;
+  constructor(public route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.player = videojs(this.target?.nativeElement);
+    this.route.data.subscribe((data) => {
+      this.clip = data.clip;
+      this.player?.src({
+        src: this.clip.url,
+        type: 'video/mp4',
+      });
+    });
   }
 }
