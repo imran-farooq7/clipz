@@ -20,7 +20,7 @@ import {
   providedIn: 'root',
 })
 export class ClipService implements Resolve<any | null> {
-  public clipsCollection!: AngularFirestoreCollection;
+  public clipsCollection: AngularFirestoreCollection;
   pageClips: any[] = [];
   constructor(
     private db: AngularFirestore,
@@ -82,17 +82,34 @@ export class ClipService implements Resolve<any | null> {
     });
     console.log(this.pageClips);
   };
+  // resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  //   return this.db
+  //     .doc(route.params.id)
+  //     .get()
+  //     .pipe(
+  //       map((snapshot) => {
+  //         const data = snapshot.data();
+  //         if (!data) {
+  //           this.router.navigate(['/']);
+  //           return;
+  //         }
+  //         return data;
+  //       })
+  //     );
+  // }
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    return this.db
+    return this.clipsCollection
       .doc(route.params.id)
       .get()
       .pipe(
         map((snapshot) => {
           const data = snapshot.data();
+
           if (!data) {
             this.router.navigate(['/']);
-            return;
+            return null;
           }
+
           return data;
         })
       );
