@@ -21,6 +21,11 @@ const routes: Routes = [
     resolve: { clip: ClipService },
   },
   {
+    path: '',
+    loadChildren: () =>
+      import('./video/video.module').then((m) => m.VideoModule),
+  },
+  {
     path: '**',
     component: NotFoundComponent,
   },

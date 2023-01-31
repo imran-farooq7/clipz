@@ -11,7 +11,6 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
-import { VideoModule } from './video/video.module';
 import { ClipComponent } from './clip/clip.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { ComponentListComponent } from './component-list/component-list.component';
@@ -32,7 +31,6 @@ import { ComponentListComponent } from './component-list/component-list.componen
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFirestoreModule,
-    VideoModule,
     AppRoutingModule,
     AngularFireStorageModule,
   ],
